@@ -1,17 +1,17 @@
 package goper
 
 import (
-	"io"
-	"os"
-	"fmt"
-	"strings"
 	"database/sql"
+	"fmt"
+	"io"
 	"log"
+	"os"
+	"strings"
 )
 
 var logger *log.Logger
 
-func init () {
+func init() {
 	logger = log.New(ColourStream{os.Stderr}, " [XXXX] ", log.LstdFlags)
 }
 
@@ -68,10 +68,12 @@ func (this *SchemaWriter) LoadSchema(driver string, schema string, db *sql.DB) e
 		t := new(Table)
 		tables.Scan(&t.Name)
 		this.Tables = append(this.Tables, t)
+
 		cols, err := db.Query(dialect.ListColumns(schema, *t))
 		if err != nil {
 			return err
 		}
+
 		for cols.Next() {
 			c := new(Column)
 			if strings.EqualFold(dialect.Name(), "sqlite3") {
@@ -83,6 +85,7 @@ func (this *SchemaWriter) LoadSchema(driver string, schema string, db *sql.DB) e
 			if err != nil {
 				panic(err)
 			}
+			// logger.Println(c.Name)
 			t.Columns = append(t.Columns, *c)
 		}
 		this.WriteType(t)
