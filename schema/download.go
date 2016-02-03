@@ -18,6 +18,7 @@ import (
 var dsn string
 var driver string
 var schema string
+var pkg string
 var logger *log.Logger
 var verbose bool
 
@@ -25,6 +26,7 @@ func init() {
 	flag.StringVar(&dsn, "dsn", "user:password@tcp(127.0.0.1:3306)/main", "database dsn")
 	flag.StringVar(&driver, "driver", "mysql", "driver")
 	flag.StringVar(&schema, "schema", "main", "schema")
+	flag.StringVar(&pkg, "package", "data", "package")
 	flag.BoolVar(&verbose, "verbose", false, "Print debugging")
 	flag.Parse()
 
@@ -43,8 +45,8 @@ func main() {
 	} else if verbose {
 		logger.Printf("Ping Worked\n")
 	}
-	os.Stdout.Write([]byte("package data\n"))
-	writer := &goper.SchemaWriter{Outfile: os.Stdout, PackageName: "data"}
+	os.Stdout.Write([]byte("package " + pkg + "\n"))
+	writer := &goper.SchemaWriter{Outfile: os.Stdout, PackageName: pkg}
 	//os.Stdout.Write([]byte(schema))
 	err = writer.LoadSchema(driver, schema, conn)
 	if err != nil {

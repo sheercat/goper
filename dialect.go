@@ -23,6 +23,6 @@ func DialectByDriver(driver string) Dialect {
 func init() {
 	dialects = make(map[string]Dialect)
 	RegisterDialect("mysql", new(MysqlDialect))
-	RegisterDialect("sqlite3", new(SqliteDialect))
-	RegisterDialect("postgres", new(PgDialect))
+	// RegisterDialect("sqlite3", new(SqliteDialect))
+	// RegisterDialect("postgres", new(PgDialect))
 }
